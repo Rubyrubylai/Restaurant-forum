@@ -1,12 +1,15 @@
 const db = require('../models')
 const User = db.User
 const bcrypt = require('bcryptjs')
+const passport = require('passport')
 
 const userController = {
+    //註冊頁面
     signupPage: (req, res) => {
         return res.render('signup')
     },
 
+    //註冊
     signup: (req, res) => {
         const { name, email, password, passwordCheck} = req.body
         User.findOne({ where: { email: email } }).then(user => {
@@ -34,6 +37,24 @@ const userController = {
                 }
             }
         })    
+    },
+
+    //登入頁面
+    signinPage: (req, res) => {
+        return res.render('signin')
+    },
+
+    //登入
+    signin: (req, res, next) => {
+        req.flash('success_msg', '成功登入!')
+        return res.redirect('/restaurants')
+    },
+
+    //登出
+    logout: (req, res) => {
+        req.flash('success_msg', '成功登出!')
+        req.logout()
+        return res.redirect('/signin')
     }
 }
 
