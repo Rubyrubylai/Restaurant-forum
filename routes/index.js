@@ -27,9 +27,9 @@ module.exports = (app, passport) => {
     //新增餐廳
     app.post('/admin/restaurants', auth.authenticatedAdmin, adminController.postRestaurant)
     //編輯餐廳頁面
-    // app.get('/admin/restaurant/edit', auth.authenticatedAdmin, adminController.editRestaurant)
-    // //編輯餐廳
-    // app.put('/admin/restaurant/:id', auth.authenticatedAdmin, adminController.putRestaurant)
+    app.get('/admin/restaurants/:id/edit', auth.authenticatedAdmin, adminController.editRestaurant)
+    //編輯餐廳
+    app.put('/admin/restaurants/:id', auth.authenticatedAdmin, adminController.putRestaurant)
     // //刪除餐廳
     // app.delete('/admin/restaurant/:id', auth.authenticatedAdmin, adminController.deleteRestaurant)
 

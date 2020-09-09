@@ -41,7 +41,40 @@ const adminController = {
         Restaurant.findByPk(req.params.id).then(restaurant => {
             return res.render('admin/restaurant', { restaurant: restaurant.toJSON() })
         })
+    },
+
+    editRestaurant: (req, res) => {
+        Restaurant.findByPk(req.params.id).then(restaurant => {
+            return res.render('admin/create', { restaurant: restaurant.toJSON() })
+        })  
+    },
+
+    putRestaurant: (req, res) => {
+        const { name, tel, address, opening_hours, description } = req.body    
+        Restaurant.findByPk(req.params.id).then(restaurant => {
+                restaurant.update({
+                    name,
+                    tel,
+                    address,
+                    opening_hours,
+                    description
+                })
+                .then(restaurant => {
+                    if (!name) {
+                        req.flash('failure_msg', 'name column cannot be blank')
+                        return res.redirect('back')
+                    }
+                    else {
+                        req.flash('success_msg', 'restaurant was successfully updated.')
+                        return res.redirect('/admin')
+                    }  
+                })
+                .catch(err => console.error(err))
+            
+        })
     }
+
+
 }
 
 module.exports = adminController
