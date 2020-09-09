@@ -22,11 +22,11 @@ module.exports = (app, passport) => {
     app.get('/admin/restaurants', auth.authenticatedAdmin, adminController.getRestaurants)
     //瀏覽一筆
     // app.get('/admin/restaurant/:id', auth.authenticatedAdmin, adminController.getRestaurant)
-    // //新增餐廳頁面
-    // app.get('/admin/restaurant/create', auth.authenticatedAdmin, adminController.createRestaurant)
-    // //新增餐廳
-    // app.post('/admin/restaurants', auth.authenticatedAdmin, adminController.postRestaurant)
-    // //編輯餐廳頁面
+    //新增餐廳頁面
+    app.get('/admin/restaurants/create', auth.authenticatedAdmin, adminController.createRestaurant)
+    //新增餐廳
+    app.post('/admin/restaurants', auth.authenticatedAdmin, adminController.postRestaurant)
+    //編輯餐廳頁面
     // app.get('/admin/restaurant/edit', auth.authenticatedAdmin, adminController.editRestaurant)
     // //編輯餐廳
     // app.put('/admin/restaurant/:id', auth.authenticatedAdmin, adminController.putRestaurant)
