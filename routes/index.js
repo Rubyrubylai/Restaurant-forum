@@ -21,7 +21,7 @@ module.exports = (app, passport) => {
     //總覽
     app.get('/admin/restaurants', auth.authenticatedAdmin, adminController.getRestaurants)
     //瀏覽一筆
-    // app.get('/admin/restaurant/:id', auth.authenticatedAdmin, adminController.getRestaurant)
+    app.get('/admin/restaurants/:id', auth.authenticatedAdmin, adminController.getRestaurant)
     //新增餐廳頁面
     app.get('/admin/restaurants/create', auth.authenticatedAdmin, adminController.createRestaurant)
     //新增餐廳

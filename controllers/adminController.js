@@ -35,6 +35,12 @@ const adminController = {
                 return res.redirect('/admin')
             })
         }
+    },
+
+    getRestaurant: (req, res) => {
+        Restaurant.findByPk(req.params.id).then(restaurant => {
+            return res.render('admin/restaurant', { restaurant: restaurant.toJSON() })
+        })
     }
 }
 
