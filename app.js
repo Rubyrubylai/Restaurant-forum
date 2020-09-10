@@ -36,4 +36,4 @@ app.use((req, res, next) => {
 
 require('./routes')(app, passport)
 
-app.listen('3000', () => console.log('app is listening!'))
+app.listen('3000' || process.env.PORT, () => console.log('app is listening!'))
