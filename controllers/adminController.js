@@ -1,5 +1,6 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
+const fs = require('fs')
 
 const adminController = {
     getRestaurants: (req, res) => {
@@ -22,13 +23,34 @@ const adminController = {
             req.flash('failure_msg', 'name column cannot be blank')
             return res.redirect('back')
         }
+        const { file } = req
+        if (file) {
+            fs.readFile(file.path, (err, data) => {
+                if (err) console.error(err)
+                fs.writeFile(`upload/${file.originalname}`, data, () => {
+                    Restaurant.create({
+                        name,
+                        tel,
+                        address,
+                        opening_hours,
+                        description,
+                        image: file ? `/upload/${file.originalname}` : null
+                    })
+                    .then (restaurant => {
+                        req.flash('success_msg', 'restaurant was successfully created.')
+                        return res.redirect('/admin')
+                    })
+                })
+            })
+        }
         else {
             Restaurant.create({
                 name,
                 tel,
                 address,
                 opening_hours,
-                description
+                description,
+                image: null
             })
             .then (restaurant => {
                 req.flash('success_msg', 'restaurant was successfully created.')
@@ -46,18 +68,25 @@ const adminController = {
     editRestaurant: (req, res) => {
         Restaurant.findByPk(req.params.id).then(restaurant => {
             return res.render('admin/create', { restaurant: restaurant.toJSON() })
-        })  
+        })
+        .catch(err => console.error(err))
     },
 
     putRestaurant: (req, res) => {
         const { name, tel, address, opening_hours, description } = req.body    
-        Restaurant.findByPk(req.params.id).then(restaurant => {
+        const { file } = req
+        if (file) {
+        fs.readFile(file.path, (err, data) => {
+            if (err) console.error(err)    
+            fs.writeFile(`upload/${file.originalname}`, data, () => {
+                Restaurant.findByPk(req.params.id).then(restaurant => {
                 restaurant.update({
                     name,
                     tel,
                     address,
                     opening_hours,
-                    description
+                    description,
+                    image: file ? `/upload/${file.originalname}`: restaurant.image
                 })
                 .then(restaurant => {
                     if (!name) {
@@ -69,9 +98,32 @@ const adminController = {
                         return res.redirect('/admin')
                     }  
                 })
-                .catch(err => console.error(err))
-            
-        })
+                })
+            })
+        })  
+        }
+        else {
+            Restaurant.findByPk(req.params.id).then(restaurant => {
+                restaurant.update({
+                    name,
+                    tel,
+                    address,
+                    opening_hours,
+                    description,
+                    image: restaurant.image
+                })
+                .then(restaurant => {
+                    if (!name) {
+                        req.flash('failure_msg', 'name column cannot be blank')
+                        return res.redirect('back')
+                    }
+                    else {
+                        req.flash('success_msg', 'restaurant was successfully updated.')
+                        return res.redirect('/admin')
+                    }  
+                })
+            })
+        } 
     },
 
     deleteRestaurant: (req, res) => {

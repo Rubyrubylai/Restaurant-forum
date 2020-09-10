@@ -2,6 +2,8 @@ const restController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController')
 const auth = require('../config/auth')
+const multer = require('multer')
+const upload = multer({ dest: 'temp/' })
 
 module.exports = (app, passport) => {
     //使用者相關路由
@@ -20,16 +22,17 @@ module.exports = (app, passport) => {
     //admin餐廳相關路由
     //總覽
     app.get('/admin/restaurants', auth.authenticatedAdmin, adminController.getRestaurants)
-    //瀏覽一筆
-    app.get('/admin/restaurants/:id', auth.authenticatedAdmin, adminController.getRestaurant)
     //新增餐廳頁面
     app.get('/admin/restaurants/create', auth.authenticatedAdmin, adminController.createRestaurant)
     //新增餐廳
-    app.post('/admin/restaurants', auth.authenticatedAdmin, adminController.postRestaurant)
+    app.post('/admin/restaurants', auth.authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
     //編輯餐廳頁面
     app.get('/admin/restaurants/:id/edit', auth.authenticatedAdmin, adminController.editRestaurant)
+    //瀏覽一筆
+    app.get('/admin/restaurants/:id', auth.authenticatedAdmin, adminController.getRestaurant)
+
     //編輯餐廳
-    app.put('/admin/restaurants/:id', auth.authenticatedAdmin, adminController.putRestaurant)
+    app.put('/admin/restaurants/:id', auth.authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
     //刪除餐廳
     app.delete('/admin/restaurants/:id', auth.authenticatedAdmin, adminController.deleteRestaurant)
 
