@@ -23,7 +23,6 @@ const userController = {
                     return res.redirect('/signup')
                 }
                 else {
-                    console.log('a')
                     var salt = bcrypt.genSaltSync(10)
                     User.create({
                         name,
