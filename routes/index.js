@@ -18,7 +18,7 @@ module.exports = (app, passport) => {
 
     //admin相關路由
     app.get('/admin', auth.authenticatedAdmin, (req, res) => { return res.redirect('/admin/restaurants')})
-    
+
     //admin餐廳相關路由
     //總覽
     app.get('/admin/restaurants', auth.authenticatedAdmin, adminController.getRestaurants)
@@ -35,6 +35,12 @@ module.exports = (app, passport) => {
     app.put('/admin/restaurants/:id', auth.authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
     //刪除餐廳
     app.delete('/admin/restaurants/:id', auth.authenticatedAdmin, adminController.deleteRestaurant)
+
+    //admin使用者相關路由
+    //顯示使用者清單
+    app.get('/admin/users', auth.authenticatedAdmin, adminController.getUsers)
+    //修改使用者權限
+    app.put('/admin/users/:id', auth.authenticatedAdmin, adminController.putUsers)
 
     //使用者相關路由
     app.get('/signup', userController.signupPage)

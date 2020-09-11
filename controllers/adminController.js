@@ -1,5 +1,6 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 const fs = require('fs')
 
 const adminController = {
@@ -131,6 +132,35 @@ const adminController = {
             restaurant.destroy().then(restaurant => {
                 return res.redirect('/admin')
             })
+        })
+    },
+
+    getUsers: (req, res) => {
+        User.findAll({
+            raw: true,
+            nest: true
+        })
+        .then(users => {
+            return res.render('admin/users', { users })
+        })
+    },
+
+    putUsers: (req, res) => {
+        User.findByPk(req.params.id).then(user => {
+            if (user.isAdmin) {
+                req.flash('success_msg', 'user was successfully updated')
+                user.update({
+                    isAdmin: false
+                })
+            }
+            else {
+                req.flash('success_msg', 'user was successfully updated')
+                user.update({
+                    isAdmin: true
+                })
+            }
+            return res.redirect('/admin/users')
+ 
         })
     }
 }
