@@ -7,6 +7,8 @@ const app = express()
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
 
+const port = 3000 || process.env.PORT
+
 app.engine('handlebars', exphbs({ defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
@@ -36,4 +38,4 @@ app.use((req, res, next) => {
 
 require('./routes')(app, passport)
 
-app.listen('3000' || process.env.PORT, () => console.log('app is listening!'))
+app.listen(port, () => console.log('app is listening!'))
