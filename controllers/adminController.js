@@ -92,7 +92,6 @@ const adminController = {
                 { include: [Category] }
             )
             .then(restaurant => {
-                console.log(restaurant)
                 return res.render('admin/create', { restaurant: restaurant.toJSON(), categories })     
             })
         })

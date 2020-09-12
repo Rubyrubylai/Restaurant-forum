@@ -48,8 +48,12 @@ module.exports = (app, passport) => {
     app.get('/admin/categories', auth.authenticatedAdmin, categoryController.getCategories)
     //新增一筆分類
     app.post('/admin/categories', auth.authenticatedAdmin, categoryController.postCategory)
-    //更新一筆分類
+    //編輯一筆分類頁面
+    app.get('/admin/categories/:id', auth.authenticatedAdmin, categoryController.editCategories)
+    //編輯一筆分類
+    app.put('/admin/categories', auth.authenticatedAdmin, categoryController.putCategory)
     //刪除一筆分類
+    app.delete('/admin/categories/:id', auth.authenticatedAdmin, categoryController.deleteCategory)
 
     //使用者相關路由
     app.get('/signup', userController.signupPage)

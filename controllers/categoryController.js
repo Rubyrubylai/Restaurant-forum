@@ -26,6 +26,50 @@ const categoryController  = {
                 return res.redirect('/admin/categories')
             })
         }
+    },
+
+    editCategories: (req, res) => {
+        Category.findAll({
+            raw: true,
+            nest: true
+        })
+        .then(categories => {
+            if (req.params.id) {
+                Category.findByPk(req.params.id).then(category => {
+                    return res.render('admin/categories', { categories, category: category.toJSON()})
+                })
+            }
+            else {
+                return res.render('admin/categories', { categories })
+            } 
+        }) 
+    },
+
+    putCategory: (req, res) => {
+        if (!req.body.name) {
+            req.flash('failure_msg', 'name column cannot be blank')
+            return res.redirect('back')
+        }
+        else {
+            Category.findByPk(req.params.id).then(category => {
+                console.log(req.body.name)
+                category.update({
+                    name: req.body.name
+                })
+                .then(category => {
+                    return res.redirect('/admin/categories')
+                })
+                .catch(err => console.error(err))
+            })
+        }
+    },
+
+    deleteCategory: (req, res) => {
+        Category.findByPk(req.params.id).then(category => {
+            category.destroy().then(category => {
+                return res.redirect('/admin/categories')
+            })
+        })
     }
 }
 
