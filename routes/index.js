@@ -47,6 +47,7 @@ module.exports = (app, passport) => {
     //瀏覽所有分類
     app.get('/admin/categories', auth.authenticatedAdmin, categoryController.getCategories)
     //新增一筆分類
+    app.post('/admin/categories', auth.authenticatedAdmin, categoryController.postCategory)
     //更新一筆分類
     //刪除一筆分類
 
