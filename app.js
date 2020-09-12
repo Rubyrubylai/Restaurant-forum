@@ -6,8 +6,12 @@ const flash = require('connect-flash')
 const app = express()
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
+const dotenv = require('dotenv')
 
-const port = process.env.PORT || 3000
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
+const port = process.env.PORT
 
 app.use(express.static('public'))
 
