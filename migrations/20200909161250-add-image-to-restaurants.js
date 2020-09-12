@@ -1,13 +1,14 @@
-'use strict'
+'use strict';
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('Restaurants', 'image', {
+  up: async (queryInterface, Sequelize) => {
+    return queryInterface.addColumn('Restaurants', 'Image', {
       type: Sequelize.STRING
     })
   },
-  down: (queryInterface, Sequelize) => {
+
+  down: async (queryInterface, Sequelize) => {
     return queryInterface.removeColumn('Restaurants', 'image')
   }
-}
+};
 
