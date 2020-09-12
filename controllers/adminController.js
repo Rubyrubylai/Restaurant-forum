@@ -87,7 +87,12 @@ const adminController = {
             nest: true
         })
         .then(categories => {
-            Restaurant.findByPk(req.params.id).then(restaurant => {
+            Restaurant.findByPk(
+                req.params.id,
+                { include: [Category] }
+            )
+            .then(restaurant => {
+                console.log(restaurant)
                 return res.render('admin/create', { restaurant: restaurant.toJSON(), categories })     
             })
         })
@@ -112,7 +117,6 @@ const adminController = {
                         image: file ? img.data.link: restaurant.image
                     })
                     .then(restaurant => {
-                        console.log(restaurant)
                         if (!name) {
                             req.flash('failure_msg', 'name column cannot be blank')
                             return res.redirect('back')
