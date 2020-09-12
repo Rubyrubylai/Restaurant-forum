@@ -7,20 +7,19 @@ const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
 module.exports = (app, passport) => {
-    //使用者相關路由
+    //前台首頁
     app.get('/', auth.authenticated, (req, res) => { return res.redirect('/restaurants') })
-    //使用者餐廳相關路由
+    
+    //前台餐廳相關路由
+    //瀏覽所有餐廳
     app.get('/restaurants', auth.authenticated, restController.getRestaurants)
-    // app.get('/restaurant/:id', auth.authenticated, restController.getRestaurant)
-    // app.post('/restaurant', auth.authenticated, restController.postRestaurant)
-    // app.put('/restaurant/:id', auth.authenticated, restController.editRestaurant)
-    // app.delete('/restaurant/:id', auth.authenticated, restController.deleteRestaurant)
+    //瀏覽個別餐廳
+    app.get('/restaurants/:id', auth.authenticated, restController.getRestaurant)
 
-
-    //admin相關路由
+    //後台首頁
     app.get('/admin', auth.authenticatedAdmin, (req, res) => { return res.redirect('/admin/restaurants')})
 
-    //admin餐廳相關路由
+    //後台餐廳相關路由
     //總覽
     app.get('/admin/restaurants', auth.authenticatedAdmin, adminController.getRestaurants)
     //新增餐廳頁面
@@ -31,19 +30,18 @@ module.exports = (app, passport) => {
     app.get('/admin/restaurants/:id/edit', auth.authenticatedAdmin, adminController.editRestaurant)
     //瀏覽一筆
     app.get('/admin/restaurants/:id', auth.authenticatedAdmin, adminController.getRestaurant)
-
     //編輯餐廳
     app.put('/admin/restaurants/:id', auth.authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
     //刪除餐廳
     app.delete('/admin/restaurants/:id', auth.authenticatedAdmin, adminController.deleteRestaurant)
 
-    //admin使用者相關路由
+    //後台使用者相關路由
     //顯示使用者清單
     app.get('/admin/users', auth.authenticatedAdmin, adminController.getUsers)
     //修改使用者權限
     app.put('/admin/users/:id', auth.authenticatedAdmin, adminController.putUsers)
 
-    //admin分類相關路由
+    //後台分類相關路由
     //瀏覽所有分類
     app.get('/admin/categories', auth.authenticatedAdmin, categoryController.getCategories)
     //新增一筆分類
