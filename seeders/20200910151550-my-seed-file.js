@@ -1,6 +1,6 @@
 'use strict';
 const bcrypt = require('bcryptjs')
-const faker = require('faker')
+const faker = require('faker');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -27,8 +27,19 @@ module.exports = {
       updatedAt: new Date()
     }], {});
 
+    queryInterface.bulkInsert('Categories', 
+      ['中式料理', '日本料理', '義大利料理', '墨西哥料理', '素食料理', '美式料理', '複合式料理']
+      .map((item, index) => ({
+        id: index + 1,
+        name: item,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })),{}
+    );
+
     return queryInterface.bulkInsert('Restaurants', 
-      Array.from({ length: 50 }).map(d => ({
+      Array.from({ length: 50 }).map((item, index) => ({
+        id: index + 1,
         name:  faker.name.findName(),
         tel: faker.phone.phoneNumber(),
         address: faker.address.streetAddress(),
@@ -36,13 +47,15 @@ module.exports = {
         description: faker.lorem.text(),
         image: `https://loremflickr.com/320/240/restaurant,food/?random=${Math.random() * 100}`,
         createdAt: new Date(),
-        updatedAt: new Date()
-      }))
-    )
+        updatedAt: new Date(),
+        CategoryId: Math.floor(Math.random() * 7) + 1
+      })),{}
+    );
   },
 
   down: async (queryInterface, Sequelize) => {
     queryInterface.bulkDelete('Users', null, {})
+    queryInterface.bulkDelete('Categories', null, {})
     return queryInterface.bulkDelete('Restaurants', null, {})
   }
 };
