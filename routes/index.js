@@ -1,6 +1,7 @@
 const restController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController')
+const categoryController = require('../controllers/categoryController')
 const auth = require('../config/auth')
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
@@ -41,6 +42,13 @@ module.exports = (app, passport) => {
     app.get('/admin/users', auth.authenticatedAdmin, adminController.getUsers)
     //修改使用者權限
     app.put('/admin/users/:id', auth.authenticatedAdmin, adminController.putUsers)
+
+    //admin分類相關路由
+    //瀏覽所有分類
+    app.get('/admin/categories', auth.authenticatedAdmin, categoryController.getCategories)
+    //新增一筆分類
+    //更新一筆分類
+    //刪除一筆分類
 
     //使用者相關路由
     app.get('/signup', userController.signupPage)
