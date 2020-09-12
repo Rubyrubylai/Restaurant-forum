@@ -19,11 +19,18 @@ const adminController = {
     },
 
     createRestaurant: (req, res) => {
-        return res.render('admin/create')
+        Category.findAll({
+            raw: true,
+            nest: true
+        })
+        .then(categories => {
+            return res.render('admin/create', { categories })
+        })
     },
 
     postRestaurant: (req, res) => {
-        const { name, tel, address, opening_hours, description } = req.body
+        const { name, CategoryId, tel, address, opening_hours, description } = req.body
+        console.log(req.body)
         if (!name) {
             req.flash('failure_msg', 'name column cannot be blank')
             return res.redirect('back')
@@ -35,6 +42,7 @@ const adminController = {
                 if (err) console.error(err)
                 Restaurant.create({
                     name,
+                    CategoryId,
                     tel,
                     address,
                     opening_hours,
@@ -50,6 +58,7 @@ const adminController = {
         else {
             Restaurant.create({
                 name,
+                CategoryId,
                 tel,
                 address,
                 opening_hours,
@@ -68,20 +77,25 @@ const adminController = {
             req.params.id,
             { include: [Category] })
         .then(restaurant => {
-            console.log(restaurant.toJSON())
             return res.render('admin/restaurant', { restaurant: restaurant.toJSON() })
         })
     },
 
     editRestaurant: (req, res) => {
-        Restaurant.findByPk(req.params.id).then(restaurant => {
-            return res.render('admin/create', { restaurant: restaurant.toJSON() })
+        Category.findAll({
+            raw: true,
+            nest: true
+        })
+        .then(categories => {
+            Restaurant.findByPk(req.params.id).then(restaurant => {
+                return res.render('admin/create', { restaurant: restaurant.toJSON(), categories })     
+            })
         })
         .catch(err => console.error(err))
     },
 
     putRestaurant: (req, res) => {
-        const { name, tel, address, opening_hours, description } = req.body    
+        const { name, CategoryId, tel, address, opening_hours, description } = req.body  
         const { file } = req
         if (file) {
             imgur.setClientID(IMGUR_CLIENT_ID)
@@ -90,6 +104,7 @@ const adminController = {
                 Restaurant.findByPk(req.params.id).then(restaurant => {
                     restaurant.update({
                         name,
+                        CategoryId,
                         tel,
                         address,
                         opening_hours,
@@ -97,6 +112,7 @@ const adminController = {
                         image: file ? img.data.link: restaurant.image
                     })
                     .then(restaurant => {
+                        console.log(restaurant)
                         if (!name) {
                             req.flash('failure_msg', 'name column cannot be blank')
                             return res.redirect('back')
@@ -113,6 +129,7 @@ const adminController = {
             Restaurant.findByPk(req.params.id).then(restaurant => {
                 restaurant.update({
                     name,
+                    CategoryId,
                     tel,
                     address,
                     opening_hours,
