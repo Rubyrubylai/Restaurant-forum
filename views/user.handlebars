@@ -23,7 +23,9 @@
   {{#each user.Comments}}
   
     <div class="col-2">
-      <img class="card-img-top" src="{{this.Restaurant.image}}" alt="Card image cap">
+      <a href="/restaurants/{{this.Restaurant.id}}">
+        <img class="card-img-top" src="{{this.Restaurant.image}}" alt="Card image cap">
+      </a>
     </div>
 
   {{/each}}
