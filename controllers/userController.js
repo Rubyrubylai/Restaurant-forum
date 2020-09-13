@@ -1,5 +1,7 @@
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
 const imgur = require('imgur-node-api')
@@ -60,8 +62,13 @@ const userController = {
 
     //瀏覽profile
     getUser: (req, res) => {
-        User.findByPk(req.user.id).then(user => {
-            return res.render('user', user)
+        User.findByPk(
+            req.user.id,
+            { include: [Comment, 
+                { model: Comment, include: [Restaurant]}
+            ] })
+        .then(user => {
+            return res.render('user', { user: user.toJSON() })
         })
     },
 
