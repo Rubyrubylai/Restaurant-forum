@@ -2,9 +2,9 @@ const restController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController')
 const categoryController = require('../controllers/categoryController')
+const commentController = require('../controllers/commentController.js')
 const auth = require('../config/auth')
 const multer = require('multer')
-const commentController = require('../controllers/commentController.js')
 const upload = multer({ dest: 'temp/' })
 
 module.exports = (app, passport) => {
