@@ -1,12 +1,12 @@
 <div class="card">
   <div class="card-body row">
     <div class="col-4">
-      <img class="card-img-top" src="..." alt="Card image cap">
+      <img class="card-img-top" src="{{user.image}}" alt="Card image cap">
     </div>
     <div class="col-8">
       <h5 class="card-title">{{user.name}}</h5>
       <p class="card-text">{{user.email}}</p>
-      <a href="#" class="btn btn-primary">edit</a>
+      <a href='users/{{user.id}}/edit' class="btn btn-primary">edit</a>
     </div>
   </div>
 </div>
