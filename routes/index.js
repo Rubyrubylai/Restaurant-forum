@@ -26,7 +26,10 @@ module.exports = (app, passport) => {
     //刪除評論
     app.delete('/comments/:id', auth.authenticated, commentController.deleteComment)
 
-    
+    //加到我的最愛
+    app.post('/favorite/:id', auth.authenticated, userController.addFavorite)
+    //移除我的最愛
+    app.delete('/favorite/:id', auth.authenticated, userController.removeFavorite)   
 
     //後台首頁
     app.get('/admin', auth.authenticatedAdmin, (req, res) => { return res.redirect('/admin/restaurants')})
