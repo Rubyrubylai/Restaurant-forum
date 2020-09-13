@@ -2,6 +2,8 @@ const db = require('../models')
 const User = db.User
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const userController = {
     //註冊頁面
@@ -65,7 +67,58 @@ const userController = {
 
     //瀏覽編輯Profile頁面
     editUser: (req, res) => {
-        return res.render('editUser')
+        User.findByPk(req.user.id).then(user => {
+            return res.render('editUser', user)
+        })
+    },
+
+    //編輯Profile
+    putUser: (req, res) => {
+        const { file } = req
+        const { name } = req.body
+
+        if (file) {
+            imgur.setClientID(IMGUR_CLIENT_ID)
+            imgur.upload(file.path, (err, img) => {
+                User.findByPk(req.user.id).then(user => {
+                    user.update({
+                        name,
+                        image: file ? img.data.link : null
+                    })
+                    .then(user => {
+                        if (!name) {
+                            req.flash('failure_msg', 'name column cannot be blank')
+                            return res.redirect('back')
+                        }
+                        else {
+                            req.flash('success_msg', 'user was successfully updated')
+                            return res.redirect(`/users/${req.user.id}`)
+                        }
+                    })
+                })
+                
+            })
+            
+        }
+        else {
+            User.findByPk(req.user.id).then(user => {
+                user.update({
+                    name,
+                    image: user.image
+                })
+                .then(user => {
+                    if (!name) {
+                        req.flash('failure_msg', 'name column cannot be blank')
+                        return res.redirect('back')
+                    }
+                    else { 
+                        req.flash('success_msg', 'user was successfully updated')
+                        return res.redirect(`/users/${req.user.id}`)
+                    }              
+                })
+            })
+            
+        }
     }
 }
 

@@ -103,7 +103,7 @@ const adminController = {
         const { file } = req
         if (file) {
             imgur.setClientID(IMGUR_CLIENT_ID)
-            img.upload(file.path, (err, img) => {
+            imgur.upload(file.path, (err, img) => {
                 if (err) console.error(err)    
                 Restaurant.findByPk(req.params.id).then(restaurant => {
                     restaurant.update({
