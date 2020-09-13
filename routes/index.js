@@ -14,6 +14,8 @@ module.exports = (app, passport) => {
     //前台餐廳相關路由
     //瀏覽所有餐廳
     app.get('/restaurants', auth.authenticated, restController.getRestaurants)
+    //最新動態
+    app.get('/restaurants/feeds', auth.authenticated, restController.getFeeds)
     //瀏覽個別餐廳
     app.get('/restaurants/:id', auth.authenticated, restController.getRestaurant)
 
@@ -21,6 +23,8 @@ module.exports = (app, passport) => {
     app.post('/comments', auth.authenticated, commentController.postComment)
     //刪除評論
     app.delete('/comments/:id', auth.authenticated, commentController.deleteComment)
+
+    
 
     //後台首頁
     app.get('/admin', auth.authenticatedAdmin, (req, res) => { return res.redirect('/admin/restaurants')})
