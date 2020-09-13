@@ -27,9 +27,14 @@ module.exports = (app, passport) => {
     app.delete('/comments/:id', auth.authenticated, commentController.deleteComment)
 
     //加到我的最愛
-    app.post('/favorite/:id', auth.authenticated, userController.addFavorite)
+    app.post('/favorite/:restaurantId', auth.authenticated, userController.addFavorite)
     //移除我的最愛
-    app.delete('/favorite/:id', auth.authenticated, userController.removeFavorite)   
+    app.delete('/favorite/:restaurantId', auth.authenticated, userController.removeFavorite)
+    
+    //加到Like
+    app.post('/like/:restaurantId', auth.authenticated, userController.addLike)
+    //移除Like
+    app.delete('/like/:restaurantId', auth.authenticated, userController.removeLike)
 
     //後台首頁
     app.get('/admin', auth.authenticatedAdmin, (req, res) => { return res.redirect('/admin/restaurants')})

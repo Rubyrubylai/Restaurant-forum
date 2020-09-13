@@ -3,6 +3,7 @@ const User = db.User
 const Favorite = db.Favorite
 const Comment = db.Comment
 const Restaurant = db.Restaurant
+const Like = db.Like
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
 const imgur = require('imgur-node-api')
@@ -131,7 +132,7 @@ const userController = {
     addFavorite: (req, res) => {
         Favorite.create({
             UserId: req.user.id,
-            RestaurantId: req.params.id
+            RestaurantId: req.params.restaurantId
         })
         .then(favorite => {
             return res.redirect('back')
@@ -142,10 +143,34 @@ const userController = {
         Favorite.findOne({
             where: {
                 UserId: req.user.id,
-                RestaurantId: req.params.id
+                RestaurantId: req.params.restaurantId
             }
         }).then(favorite => {
             favorite.destroy().then(favorite => {
+                return res.redirect('back')
+            })
+        })
+    },
+
+    addLike: (req, res) => {
+        Like.create({
+            UserId: req.user.id,
+            RestaurantId: req.params.restaurantId
+        })
+        .then(like => {
+            return res.redirect('back')
+        })
+    },
+
+    removeLike: (req, res) => {
+        Like.findOne({
+            where: {
+                UserId: req.user.id,
+                RestaurantId: req.params.restaurantId
+            }
+        })
+        .then(like => {
+            like.destroy().then(like => {
                 return res.redirect('back')
             })
         })
