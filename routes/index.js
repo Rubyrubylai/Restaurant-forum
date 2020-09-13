@@ -53,9 +53,9 @@ module.exports = (app, passport) => {
     //新增一筆分類
     app.post('/admin/categories', auth.authenticatedAdmin, categoryController.postCategory)
     //編輯一筆分類頁面
-    app.get('/admin/categories/:id', auth.authenticatedAdmin, categoryController.editCategories)
+    app.get('/admin/categories/:id', auth.authenticatedAdmin, categoryController.getCategories)
     //編輯一筆分類
-    app.put('/admin/categories', auth.authenticatedAdmin, categoryController.putCategory)
+    app.put('/admin/categories/:id', auth.authenticatedAdmin, categoryController.putCategory)
     //刪除一筆分類
     app.delete('/admin/categories/:id', auth.authenticatedAdmin, categoryController.deleteCategory)
 

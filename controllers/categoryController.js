@@ -8,7 +8,14 @@ const categoryController  = {
             nest: true
         })
         .then(categories => {
-            return res.render('admin/categories', { categories })
+            if (req.params.id) {
+                Category.findByPk(req.params.id).then(category => {
+                    return res.render('admin/categories', { categories, category: category.toJSON()})
+                })
+            }
+            else {
+                return res.render('admin/categories', { categories })
+            } 
         })   
     },
 
@@ -28,23 +35,6 @@ const categoryController  = {
         }
     },
 
-    editCategories: (req, res) => {
-        Category.findAll({
-            raw: true,
-            nest: true
-        })
-        .then(categories => {
-            if (req.params.id) {
-                Category.findByPk(req.params.id).then(category => {
-                    return res.render('admin/categories', { categories, category: category.toJSON()})
-                })
-            }
-            else {
-                return res.render('admin/categories', { categories })
-            } 
-        }) 
-    },
-
     putCategory: (req, res) => {
         if (!req.body.name) {
             req.flash('failure_msg', 'name column cannot be blank')
@@ -52,7 +42,6 @@ const categoryController  = {
         }
         else {
             Category.findByPk(req.params.id).then(category => {
-                console.log(req.body.name)
                 category.update({
                     name: req.body.name
                 })
