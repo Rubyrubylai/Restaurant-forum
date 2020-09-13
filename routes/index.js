@@ -19,6 +19,8 @@ module.exports = (app, passport) => {
 
     //新增評論
     app.post('/comments', auth.authenticated, commentController.postComment)
+    //刪除評論
+    app.delete('/comments/:id', auth.authenticated, commentController.deleteComment)
 
     //後台首頁
     app.get('/admin', auth.authenticatedAdmin, (req, res) => { return res.redirect('/admin/restaurants')})
