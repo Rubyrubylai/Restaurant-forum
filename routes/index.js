@@ -4,6 +4,7 @@ const userController = require('../controllers/userController')
 const categoryController = require('../controllers/categoryController')
 const auth = require('../config/auth')
 const multer = require('multer')
+const commentController = require('../controllers/commentController.js')
 const upload = multer({ dest: 'temp/' })
 
 module.exports = (app, passport) => {
@@ -15,6 +16,9 @@ module.exports = (app, passport) => {
     app.get('/restaurants', auth.authenticated, restController.getRestaurants)
     //瀏覽個別餐廳
     app.get('/restaurants/:id', auth.authenticated, restController.getRestaurant)
+
+    //新增評論
+    app.post('/comments', auth.authenticated, commentController.postComment)
 
     //後台首頁
     app.get('/admin', auth.authenticatedAdmin, (req, res) => { return res.redirect('/admin/restaurants')})
