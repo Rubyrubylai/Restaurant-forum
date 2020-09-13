@@ -61,6 +61,11 @@ const userController = {
         User.findByPk(req.user.id).then(user => {
             return res.render('user', user)
         })
+    },
+
+    //瀏覽編輯Profile頁面
+    editUser: (req, res) => {
+        return res.render('editUser')
     }
 }
 

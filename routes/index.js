@@ -66,5 +66,7 @@ module.exports = (app, passport) => {
     app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signin)
     app.get('/logout', userController.logout)
     //瀏覽profile
-    app.get('/users/:id', userController.getUser)
+    app.get('/users/:id', auth.authenticated, userController.getUser)
+    //瀏覽編輯Profile頁面
+    app.get('/users/:id/edit', auth.authenticated, userController.editUser)
 }
