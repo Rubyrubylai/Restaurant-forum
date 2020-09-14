@@ -4,6 +4,7 @@ const Favorite = db.Favorite
 const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Like = db.Like
+const Followship = db.Followship
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
 const imgur = require('imgur-node-api')
@@ -171,6 +172,47 @@ const userController = {
         })
         .then(like => {
             like.destroy().then(like => {
+                return res.redirect('back')
+            })
+        })
+    },
+
+    getTopUser: (req, res) => {
+        User.findAll({
+            include: [{ model: User, as: 'Followers' }]
+        })
+        .then(users => {
+            console.log(users)
+            console.log('--------')
+            users = users.map(user => ({
+                ...user.dataValues,
+                FollowerCount: user.Followers.length,
+                isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+            }))
+            users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+            console.log(users)
+            return res.render('topUser', { users })
+        })
+    },
+
+    addFollowing: (req, res) => {
+        console.log(req.params.userId)
+        Followship.create({
+            followerId: req.user.id,
+            followingId: req.params.userId
+        })
+        .then(followship => {
+            return res.redirect('back')
+        })
+    },
+
+    removeFollowing: (req, res) => {
+        Followship.findOne({
+            followerId: req.user.id,
+            followingId: req.params.userId
+        })
+        .then(followship => {
+            followship.destroy().then(followship => {
                 return res.redirect('back')
             })
         })

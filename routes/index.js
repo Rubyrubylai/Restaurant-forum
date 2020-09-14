@@ -79,6 +79,14 @@ module.exports = (app, passport) => {
     app.get('/signin', userController.signinPage)
     app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signin)
     app.get('/logout', userController.logout)
+
+    //美食達人
+    app.get('/users/top', auth.authenticated, userController.getTopUser)
+    //追蹤
+    app.post('/following/:userId', auth.authenticated, userController.addFollowing)
+    //取消追蹤
+    app.delete('/following/:userId', auth.authenticated, userController.removeFollowing)
+
     //瀏覽profile
     app.get('/users/:id', auth.authenticated, userController.getUser)
     //瀏覽編輯Profile頁面
