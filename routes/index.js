@@ -1,4 +1,4 @@
-const restController = require('../controllers/restController.js')
+const restaurantController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController')
 const categoryController = require('../controllers/categoryController')
@@ -13,15 +13,15 @@ module.exports = (app, passport) => {
     
     //前台餐廳相關路由
     //瀏覽所有餐廳
-    app.get('/restaurants', auth.authenticated, restController.getRestaurants)
+    app.get('/restaurants', auth.authenticated, restaurantController.getRestaurants)
     //最新動態
-    app.get('/restaurants/feeds', auth.authenticated, restController.getFeeds)
+    app.get('/restaurants/feeds', auth.authenticated, restaurantController.getFeeds)
     //人氣餐廳
-    app.get('/restaurants/top', auth.authenticated, restController.getTopRestaurant)
+    app.get('/restaurants/top', auth.authenticated, restaurantController.getTopRestaurant)
     //瀏覽餐廳dashboard
-    app.get('/restaurants/:id/dashboard', auth.authenticated, restController.getDashboard)
+    app.get('/restaurants/:id/dashboard', auth.authenticated, restaurantController.getDashboard)
     //瀏覽個別餐廳
-    app.get('/restaurants/:id', auth.authenticated, restController.getRestaurant)
+    app.get('/restaurants/:id', auth.authenticated, restaurantController.getRestaurant)
 
     //新增評論
     app.post('/comments', auth.authenticated, commentController.postComment)
