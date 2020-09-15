@@ -8,13 +8,14 @@ const categoryController  = {
             nest: true
         })
         .then(categories => {
+            const email = req.user.email
             if (req.params.id) {
                 Category.findByPk(req.params.id).then(category => {
-                    return res.render('admin/categories', { categories, category: category.toJSON()})
+                    return res.render('admin/categories', { categories, category: category.toJSON(), email})
                 })
             }
             else {
-                return res.render('admin/categories', { categories })
+                return res.render('admin/categories', { categories, email })
             } 
         })   
     },

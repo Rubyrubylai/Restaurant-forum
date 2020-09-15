@@ -1,8 +1,11 @@
 <h1>餐廳後台</h1>
 
-<a href='/admin/restaurants/'>Restaurants</a> | 
-<a href='/admin/users'>Users</a> | 
+<a href='/admin/restaurants/'>Restaurants</a> |
 <a href='/admin/categories'>Categories</a>
+{{#ifEquals email 'root@example.com'}}
+| <a href='/admin/users'>Users</a>
+{{/ifEquals}}
+
 
 <br/>
 <br/>

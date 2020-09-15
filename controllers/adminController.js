@@ -14,7 +14,8 @@ const adminController = {
             include: [Category]
         })
         .then(restaurants => {
-            return res.render('admin/restaurants', { restaurants })
+            const email = req.user.email
+            return res.render('admin/restaurants', { restaurants, email })
         })
     },
 

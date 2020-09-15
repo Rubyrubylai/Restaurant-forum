@@ -1,4 +1,4 @@
-const restaurantController = require('../controllers/restController.js')
+const restaurantController = require('../controllers/restaurantController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController')
 const categoryController = require('../controllers/categoryController')
