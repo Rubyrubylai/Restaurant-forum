@@ -89,6 +89,8 @@ module.exports = (app, passport) => {
     //取消追蹤
     app.delete('/following/:userId', auth.authenticated, userController.removeFollowing)
 
+    //瀏覽其他人的profile
+    app.get('/users/others/:id', auth.authenticated, userController.getOtherUser)
     //瀏覽profile
     app.get('/users/:id', auth.authenticated, userController.getUser)
     //瀏覽編輯Profile頁面

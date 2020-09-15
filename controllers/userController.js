@@ -68,10 +68,41 @@ const userController = {
         User.findByPk(
             req.user.id,
             { include: [Comment, 
-                { model: Comment, include: [Restaurant]}
+                { model: Comment, include: [Restaurant]},
+                { model: Restaurant, as: 'FavoritedRestaurants'}
             ] })
         .then(user => {
-            return res.render('user', { user: user.toJSON() })
+            const favoritedRestaurants = user.FavoritedRestaurants.map(r => ({
+                ...r.dataValues
+            }))
+            const followers = req.user.Followers
+            const followings = req.user.Followings
+            return res.render('user', { user: user.toJSON(), favoritedRestaurants, followers, followings })
+        })
+    },
+
+    //瀏覽其他人的profile
+    getOtherUser: (req, res) => {
+        User.findByPk(
+            req.params.id,
+            { include: [Comment, 
+                { model: Comment, include: [Restaurant]},
+                { model: Restaurant, as: 'FavoritedRestaurants'},
+                { model: User, as: 'Followers' },
+                { model: User, as: 'Followings' }
+            ] })
+        .then(otherUser => {
+            const favoritedRestaurants = otherUser.FavoritedRestaurants.map(r => ({
+                ...r.dataValues
+            }))
+            const followers = otherUser.Followers.map(u => ({
+                ...u.dataValues
+            }))
+            const followings = otherUser.Followings.map(u => ({
+                ...u.dataValues
+            }))
+            user = req.user
+            return res.render('user', { otherUser: otherUser.toJSON(), favoritedRestaurants, followers, followings })
         })
     },
 
@@ -182,15 +213,12 @@ const userController = {
             include: [{ model: User, as: 'Followers' }]
         })
         .then(users => {
-            console.log(users[2].Followers)
-            console.log('--------')
             users = users.map(user => ({
                 ...user.dataValues,
                 FollowerCount: user.Followers.length,
                 isFollowed: user.Followers.map(d => d.id).includes(req.user.id)
             }))
             users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-            console.log(users)
             return res.render('topUser', { users })
         })
     },

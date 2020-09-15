@@ -1,33 +1,103 @@
 <div class="card">
   <div class="card-body row">
     <div class="col-4">
-      <img class="card-img-top" src="{{user.image}}" alt="Card image cap">
+      
+      <img class="card-img-top" src="{{#if otherUser}} {{otherUser.image}} {{else}} {{user.image}} {{/if}}" alt="Card image cap">
     </div>
     <div class="col-8">
-      <h5 class="card-title">{{user.name}}</h5>
-      <p class="card-text">{{user.email}}</p>
-      <p class="card-text">{{user.Comments.length}}已評論餐廳</p>
-      </br>
-      </br>
+      <h5 class="card-title">{{#if otherUser}} {{otherUser.name}} {{else}} {{user.name}} {{/if}}</h5>
+      <p class="card-text">{{#if otherUser}} {{otherUser.email}} {{else}} {{user.email}} {{/if}}</p>
+      <p class="card-text">{{#if otherUser}} {{otherUser.Comments.length}} {{else}} {{user.Comments.length}} {{/if}} 已評論餐廳
+      <br>{{favoritedRestaurants.length}} 已收藏餐廳
+      <br>{{followings.length}} followings (追蹤者)
+      <br>{{followers.length}} followers (追隨者)
+      </p>
+      {{#if otherUser}}
+      
+      {{else}}
       <a href='/users/{{user.id}}/edit' class="btn btn-primary">edit</a>
+      {{/if}}
     </div>
   </div>
 </div>
 </br>
 
-<div class="card">
-  <div class="card-header">
-    {{user.Comments.length}}已評論餐廳
-  </div>
-  <div class="card-body row">
-  {{#each user.Comments}}
-  
-    <div class="col-2">
-      <a href="/restaurants/{{this.Restaurant.id}}">
-        <img class="card-img-top" src="{{this.Restaurant.image}}" alt="Card image cap">
-      </a>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card-header">
+      {{followings.length}} followings (追蹤者)
     </div>
+    <div class="card-body row">
+    {{#each followings}}
+    
+      <div class="col-2">
+        <a href="/users/others/{{this.id}}">
+          <img class="card-img-top" src="{{this.image}}" alt="Card image cap">
+        </a>
+      </div>
 
-  {{/each}}
+    {{/each}}
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card-header">
+      {{#if otherUser}}
+        {{otherUser.Comments.length}}已評論餐廳
+      {{else}}
+        {{user.Comments.length}}已評論餐廳
+      {{/if}}
+    </div>
+    <div class="card-body row">
+    {{#if otherUser}}
+      {{#each otherUser.Comments}}
+        <div class="col-2">
+          <a href="/restaurants/{{this.Restaurant.id}}">
+            <img class="card-img-top" src="{{this.Restaurant.image}}" alt="Card image cap">
+          </a>
+        </div>
+      {{/each}}
+    {{else}}
+      {{#each user.Comments}}
+        <div class="col-2">
+          <a href="/restaurants/{{this.Restaurant.id}}">
+            <img class="card-img-top" src="{{this.Restaurant.image}}" alt="Card image cap">
+          </a>
+        </div>
+      {{/each}}
+    {{/if}}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card-header">
+      {{followers.length}} followers (追隨者)
+    </div>
+    <div class="card-body row">
+    {{#each followers}}
+    
+      <div class="col-2">
+        <a href="/users/others/{{this.id}}">
+          <img class="card-img-top" src="{{this.image}}" alt="Card image cap">
+        </a>
+      </div>
+
+    {{/each}}
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card-header">
+      {{favoritedRestaurants.length}}收藏的餐廳
+    </div>
+    <div class="card-body row">
+    {{#each favoritedRestaurants}}
+      <div class="col-2">
+        <a href="/restaurants/{{this.id}}">
+          <img class="card-img-top" src="{{this.image}}" alt="Card image cap">
+        </a>
+      </div>
+    {{/each}}
+    </div>
   </div>
 </div>
