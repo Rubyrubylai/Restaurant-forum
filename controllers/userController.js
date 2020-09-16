@@ -77,15 +77,15 @@ const userController = {
             }))
             const set = new Set()
             noRepeatedComment = comments.filter(c => !set.has(c.RestaurantId) ? set.add(c.RestaurantId) : false)
-            console.log(noRepeatedComment[0].Restaurant.dataValues)
-            // if(noRepeatedComment.length === 0) {
-            //      noRepeatedComment = []
-            // } else {
-            //     noRepeatedComment = noRepeatedComment.map(c => ({
-            //         ...c,
-            //         image: c.Restaurant.dataValues.image
-            //     }))  
-            // }
+            
+            if(noRepeatedComment.length === 0) {
+                 noRepeatedComment = []
+            } else {
+                noRepeatedComment = noRepeatedComment.map(c => ({
+                    ...c,
+                    image: c.Restaurant.dataValues.image
+                }))  
+            }
 
             const favoritedRestaurants = user.FavoritedRestaurants.map(r => ({
                 ...r.dataValues
