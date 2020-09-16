@@ -72,12 +72,24 @@ const userController = {
                 { model: Restaurant, as: 'FavoritedRestaurants'}
             ] })
         .then(user => {
+            const comments = user.Comments.map(c => ({
+                ...c.dataValues
+            }))
+            const set = new Set()
+            noRepeatedComment = comments.filter(c => !set.has(c.RestaurantId) ? set.add(c.RestaurantId) : false)
+            noRepeatedComment =noRepeatedComment.map(c => ({
+                ...c,
+                image: c.Restaurant.dataValues.image
+            }))
+            
+            console.log(noRepeatedComment)
+        
             const favoritedRestaurants = user.FavoritedRestaurants.map(r => ({
                 ...r.dataValues
             }))
             const followers = req.user.Followers
             const followings = req.user.Followings
-            return res.render('user', { user: user.toJSON(), favoritedRestaurants, followers, followings })
+            return res.render('user', { user: user.toJSON(), favoritedRestaurants, followers, followings, noRepeatedComment })
         })
     },
 

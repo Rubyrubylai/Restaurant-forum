@@ -7,7 +7,7 @@
     <div class="col-8">
       <h5 class="card-title">{{#if otherUser}} {{otherUser.name}} {{else}} {{user.name}} {{/if}}</h5>
       <p class="card-text">{{#if otherUser}} {{otherUser.email}} {{else}} {{user.email}} {{/if}}</p>
-      <p class="card-text">{{#if otherUser}} {{otherUser.Comments.length}} {{else}} {{user.Comments.length}} {{/if}} 已評論餐廳
+      <p class="card-text">{{#if otherUser}} {{otherUser.Comments.length}} {{else}} {{noRepeatedComment.length}} {{/if}} 已評論餐廳
       <br>{{favoritedRestaurants.length}} 已收藏餐廳
       <br>{{followings.length}} followings (追蹤者)
       <br>{{followers.length}} followers (追隨者)
@@ -44,7 +44,7 @@
       {{#if otherUser}}
         {{otherUser.Comments.length}}已評論餐廳
       {{else}}
-        {{user.Comments.length}}已評論餐廳
+        {{noRepeatedComment.length}}已評論餐廳
       {{/if}}
     </div>
     <div class="card-body row">
@@ -57,10 +57,10 @@
         </div>
       {{/each}}
     {{else}}
-      {{#each user.Comments}}
+      {{#each noRepeatedComment}}
         <div class="col-2">
-          <a href="/restaurants/{{this.Restaurant.id}}">
-            <img class="card-img-top" src="{{this.Restaurant.image}}" alt="Card image cap">
+          <a href="/restaurants/{{this.RestaurantId}}">
+            <img class="card-img-top" src="{{this.image}}" alt="Card image cap">
           </a>
         </div>
       {{/each}}
