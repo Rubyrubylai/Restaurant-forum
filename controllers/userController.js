@@ -77,13 +77,15 @@ const userController = {
             }))
             const set = new Set()
             noRepeatedComment = comments.filter(c => !set.has(c.RestaurantId) ? set.add(c.RestaurantId) : false)
-            noRepeatedComment =noRepeatedComment.map(c => ({
-                ...c,
-                image: c.Restaurant.dataValues.image
-            }))
+            if(noRepeatedComment.length === 0) {
+                noRepeatedComment = []
+            } else {
+                noRepeatedComment = noRepeatedComment.map(c => ({
+                    ...c,
+                    image: c.Restaurant.dataValues.image
+                }))
+            }
             
-            console.log(noRepeatedComment)
-        
             const favoritedRestaurants = user.FavoritedRestaurants.map(r => ({
                 ...r.dataValues
             }))
