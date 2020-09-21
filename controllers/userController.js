@@ -86,7 +86,7 @@ const userController = {
                     return {
                     
                     ...c,
-                    image: c.Restaurant.dataValues.image
+                    image: c.Restaurant ? c.Restaurant.dataValues.image : null
                     }
                 })  
             }
