@@ -81,10 +81,14 @@ const userController = {
             if(noRepeatedComment.length === 0) {
                  noRepeatedComment = []
             } else {
-                noRepeatedComment = noRepeatedComment.map(c => ({
+                noRepeatedComment = noRepeatedComment.map(c => {
+                    console.log(c.Restaurant)
+                    return {
+                    
                     ...c,
                     image: c.Restaurant.dataValues.image
-                }))  
+                    }
+                })  
             }
 
             const favoritedRestaurants = user.FavoritedRestaurants.map(r => ({
