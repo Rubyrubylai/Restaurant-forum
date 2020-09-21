@@ -17,7 +17,17 @@ const adminController = {
         const email = req.user.email
           callback({ restaurants, email })
       })
-  }
+  },
+
+  getRestaurant: (req, res, callback) => {
+    Restaurant.findByPk(
+      req.params.id,
+      { include: [Category] 
+    })
+    .then(restaurant => {
+      callback({ restaurant: restaurant.toJSON() })
+    })
+  },
 }
 
 module.exports = adminController
