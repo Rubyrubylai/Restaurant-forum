@@ -73,27 +73,33 @@ const userController = {
             ] })
         .then(user => {
             const comments = user.Comments.map(c => ({
-                ...c.dataValues
+                ...c.dataValues,
+                image: c.Restaurant ? c.Restaurant.dataValues.image : null
             }))
+            console.log(user.Comments)
+            console.log('--------')
+            console.log(comments)
+            console.log('--------')
             const set = new Set()
             noRepeatedComment = comments.filter(c => !set.has(c.RestaurantId) ? set.add(c.RestaurantId) : false)
-            
             if(noRepeatedComment.length === 0) {
-                 noRepeatedComment = []
-            } else {
-                noRepeatedComment = noRepeatedComment.map(c => {
-                    console.log(c.Restaurant)
-                    return {
-                    
-                    ...c,
-                    image: c.Restaurant ? c.Restaurant.dataValues.image : null
-                    }
-                })  
-            }
+                noRepeatedComment = []
+           } else {
+               noRepeatedComment = noRepeatedComment.map(c => {
+                   //console.log(c.Restaurant)
+                   return {
+                   
+                   ...c,
+                   image: c.Restaurant ? c.Restaurant.dataValues.image : null
+                   }
+               })  
+           }
+            
 
             const favoritedRestaurants = user.FavoritedRestaurants.map(r => ({
                 ...r.dataValues
             }))
+            console.log(user.FavoritedRestaurants)
             const followers = req.user.Followers
             const followings = req.user.Followings
             return res.render('user', { user: user.toJSON(), favoritedRestaurants, followers, followings, noRepeatedComment })
