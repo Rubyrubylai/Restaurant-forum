@@ -50,7 +50,15 @@ const categoryController  = {
         .catch(err => console.error(err))
       })
     }
-},
+  },
+
+  deleteCategory: (req, res, callback) => {
+    Category.findByPk(req.params.id).then(category => {
+      category.destroy().then(category => {
+        callback({ status: 'success', message: `${category.name} was successfully deleted` })
+      })
+    })
+  }
 }
 
 module.exports = categoryController
