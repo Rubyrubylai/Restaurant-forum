@@ -30,7 +30,7 @@ const categoryController  = {
         name
       })
       .then(category => {
-        callback({ status: 'success', message: 'category was successfully added' })
+        callback({ status: 'success', message: 'category was successfully created' })
       })
     }
   },
