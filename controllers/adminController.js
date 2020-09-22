@@ -65,7 +65,7 @@ const adminController = {
                 return res.redirect('back')
             }
             req.flash('success_msg', data['message'])
-            return res.redirect('/admin')
+            return res.redirect('/admin/restaurants')
             
         })
     },
