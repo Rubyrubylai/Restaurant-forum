@@ -25,47 +25,14 @@ const adminController = {
     },
 
     postRestaurant: (req, res) => {
-        const { name, CategoryId, tel, address, opening_hours, description } = req.body
-        console.log(req.body)
-        if (!name) {
-            req.flash('failure_msg', 'name column cannot be blank')
-            return res.redirect('back')
-        }
-        const { file } = req
-        if (file) {
-            imgur.setClientID(IMGUR_CLIENT_ID)
-            imgur.upload(file.path, (err, img) => {
-                if (err) console.error(err)
-                Restaurant.create({
-                    name,
-                    CategoryId,
-                    tel,
-                    address,
-                    opening_hours,
-                    description,
-                    image: file ? img.data.link : null
-                })
-                .then (restaurant => {
-                    req.flash('success_msg', 'restaurant was successfully created.')
-                    return res.redirect('/admin')
-                })        
-            })
-        }
-        else {
-            Restaurant.create({
-                name,
-                CategoryId,
-                tel,
-                address,
-                opening_hours,
-                description,
-                image: null
-            })
-            .then (restaurant => {
-                req.flash('success_msg', 'restaurant was successfully created.')
-                return res.redirect('/admin')
-            })
-        }
+        adminService.postRestaurant(req, res, (data) => {
+            if (data['status'] === 'error') {
+                req.flash('failure_msg', data['message'])
+                return res.redirect('back')
+            }
+            req.flash('success_msg', data['message'])
+            return res.redirect('/admin/restaurants')
+        })
     },
 
     getRestaurant: (req, res) => {
@@ -92,58 +59,15 @@ const adminController = {
     },
 
     putRestaurant: (req, res) => {
-        const { name, CategoryId, tel, address, opening_hours, description } = req.body  
-        const { file } = req
-        if (file) {
-            imgur.setClientID(IMGUR_CLIENT_ID)
-            imgur.upload(file.path, (err, img) => {
-                if (err) console.error(err)    
-                Restaurant.findByPk(req.params.id).then(restaurant => {
-                    restaurant.update({
-                        name,
-                        CategoryId,
-                        tel,
-                        address,
-                        opening_hours,
-                        description,
-                        image: file ? img.data.link: restaurant.image
-                    })
-                    .then(restaurant => {
-                        if (!name) {
-                            req.flash('failure_msg', 'name column cannot be blank')
-                            return res.redirect('back')
-                        }
-                        else {
-                            req.flash('success_msg', 'restaurant was successfully updated.')
-                            return res.redirect('/admin')
-                        }  
-                    })
-                }) 
-            })  
-        }
-        else {
-            Restaurant.findByPk(req.params.id).then(restaurant => {
-                restaurant.update({
-                    name,
-                    CategoryId,
-                    tel,
-                    address,
-                    opening_hours,
-                    description,
-                    image: restaurant.image
-                })
-                .then(restaurant => {
-                    if (!name) {
-                        req.flash('failure_msg', 'name column cannot be blank')
-                        return res.redirect('back')
-                    }
-                    else {
-                        req.flash('success_msg', 'restaurant was successfully updated.')
-                        return res.redirect('/admin')
-                    }  
-                })
-            })
-        } 
+        adminService.putRestaurant(req, res, (data) => {
+            if (data['status'] === 'error') {
+                req.flash('failure_msg', data['message'])
+                return res.redirect('back')
+            }
+            req.flash('success_msg', data['message'])
+            return res.redirect('/admin')
+            
+        })
     },
 
     deleteRestaurant: (req, res) => {

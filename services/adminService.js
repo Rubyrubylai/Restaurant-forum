@@ -35,8 +35,98 @@ const adminController = {
             callback({ status: 'success', message: '' })
         })
     })
-  }
+  },
+
+  postRestaurant: (req, res, callback) => {
+    const { name, CategoryId, tel, address, opening_hours, description } = req.body
+    if (!name) {
+      callback({ status: 'error', message: 'name column cannot be blank' })
+    }
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        Restaurant.create({
+          name,
+          tel,
+          address,
+          opening_hours,
+          description,
+          image: file ? img.data.link : null,
+          CategoryId
+        })
+        .then (restaurant => {
+          callback({ status: 'success', message: 'restaurant was successfully created' })
+        })        
+      })
+    }
+    else {
+      Restaurant.create({
+        name,
+        tel,
+        address,
+        opening_hours,
+        description,
+        image: null,
+        CategoryId
+      })
+      .then (restaurant => {
+        callback({ status: 'success', message: 'restaurant was successfully created' })
+      })
+    }
+  },
   
+  putRestaurant: (req, res, callback) => {
+    const { name, CategoryId, tel, address, opening_hours, description } = req.body  
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        if (err) console.error(err)    
+        Restaurant.findByPk(req.params.id).then(restaurant => {
+          restaurant.update({
+            name,
+            CategoryId,
+            tel,
+            address,
+            opening_hours,
+            description,
+            image: file ? img.data.link: restaurant.image
+          })
+          .then(restaurant => {
+            if (!name) {
+              callback({ status: 'error', message: 'name column cannot be blank'})
+            }
+            else {
+              callback({ status: 'success', message: 'restaurant was successfully updated'})
+            }  
+          })
+        }) 
+      })  
+    }
+    else {
+      Restaurant.findByPk(req.params.id).then(restaurant => {
+        restaurant.update({
+          name,
+          CategoryId,
+          tel,
+          address,
+          opening_hours,
+          description,
+          image: restaurant.image
+        })
+        .then(restaurant => {
+          if (!name) {
+            callback({ status: 'error', message: 'name column cannot be blank'})
+          }
+          else {
+            callback({ status: 'success', message: 'restaurant was successfully updated'})
+          }  
+        })
+      })
+    } 
+  },
+
 }
 
 module.exports = adminController
