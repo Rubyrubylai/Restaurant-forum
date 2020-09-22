@@ -10,19 +10,14 @@ const categoryController  = {
     },
 
     postCategory: (req, res) => {
-        const { name } = req.body
-        if (!name) {
-            req.flash('failure_msg', 'name column cannot be blank')
-            return res.redirect('back')
-        }
-        else {
-            Category.create({
-                name
-            })
-            .then(category => {
-                return res.redirect('/admin/categories')
-            })
-        }
+        categoryService.postCategory(req, res, (data) => {
+            if (data['status'] === 'error') {
+                req.flash('failure_msg', data['message'])
+                return res.redirect('back')
+            }
+            req.flash('success_msg', data['message'])
+            return res.redirect('/admin/categories')
+        })
     },
 
     putCategory: (req, res) => {

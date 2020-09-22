@@ -71,6 +71,7 @@ const adminController = {
         CategoryId
       })
       .then (restaurant => {
+        console.log(restaurant)
         callback({ status: 'success', message: 'restaurant was successfully created' })
       })
     }
