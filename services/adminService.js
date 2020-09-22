@@ -28,6 +28,8 @@ const adminController = {
       callback({ restaurant: restaurant.toJSON() })
     })
   },
+
+  
 }
 
 module.exports = adminController
