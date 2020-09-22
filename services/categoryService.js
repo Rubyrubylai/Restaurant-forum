@@ -3,7 +3,7 @@ const Category = db.Category
 
 const categoryController  = {
   getCategories: (req, res, callback) => {
-      Category.findAll({
+      return Category.findAll({
           raw: true,
           nest: true
       })
