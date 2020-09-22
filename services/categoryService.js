@@ -33,7 +33,24 @@ const categoryController  = {
         callback({ status: 'success', message: 'category was successfully added' })
       })
     }
-  }
+  },
+
+  putCategory: (req, res, callback) => {
+    if (!req.body.name) {
+      callback({ status: 'error', message: 'name column cannot be blank' })
+    }
+    else {
+      Category.findByPk(req.params.id).then(category => {
+        category.update({
+            name: req.body.name
+        })
+        .then(category => {
+          callback({ status: 'success', message: 'category was successfully updated' })
+        })
+        .catch(err => console.error(err))
+      })
+    }
+},
 }
 
 module.exports = categoryController

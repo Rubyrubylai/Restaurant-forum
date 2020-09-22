@@ -21,21 +21,14 @@ const categoryController  = {
     },
 
     putCategory: (req, res) => {
-        if (!req.body.name) {
-            req.flash('failure_msg', 'name column cannot be blank')
-            return res.redirect('back')
-        }
-        else {
-            Category.findByPk(req.params.id).then(category => {
-                category.update({
-                    name: req.body.name
-                })
-                .then(category => {
-                    return res.redirect('/admin/categories')
-                })
-                .catch(err => console.error(err))
-            })
-        }
+        categoryService.putCategory(req, res, (data) => {
+            if (data['status'] === 'error') {
+                req.flash('failure_msg', data['message'])
+                return res.redirect('back')
+            }
+            req.flash('success_msg', data['message'])
+            return res.redirect('/admin/categories')
+        })
     },
 
     deleteCategory: (req, res) => {
